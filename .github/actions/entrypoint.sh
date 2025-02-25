@@ -56,24 +56,22 @@ else
     add_key_value awsLambda "False"
 fi
 
-# add_key_value awsLambda "True"
-# add_key_value awsLambda.filesModified "False"
-
-# k=awsLambda
-# v="True"
-# if [ ! -z "$k" ] && [ ! -z "$v" ]; then
-#     add_key_value "$k" "$v"
-# else
-#     echo "Usage: $0 [key] [value] or $0 --interactive"
-# fi
-
-# k=awsLambda.filesModified
-# v="True"
-# if [ ! -z "$k" ] && [ ! -z "$v" ]; then
-#     add_key_value "$k" "$v"
-# else
-#     echo "Usage: $0 [key] [value] or $0 --interactive"
-# fi
+# Check if cf-template directory exists
+if [ -d "cf-template" ]; then
+    echo "CloudFormation template directory found."
+    add_key_value cloudFormation "True"
+    # Check if lambda-code was modified in the latest commit
+    if git diff --name-only HEAD^ HEAD | grep '^cf-template/'; then
+        echo "Changes detected in cf-template directory."
+        add_key_value awsCloudFormation "True"
+    else
+        echo "No changes detected in cf-template directory."
+        add_key_value awsCloudFormation "False"
+    fi
+else
+    echo "CloudFormation template directory not found."
+    add_key_value awsCloudFormation "False"
+fi
 
 echo "Services used in this action: `cat services-used.json`"
 

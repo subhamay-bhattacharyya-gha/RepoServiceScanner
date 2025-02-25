@@ -4,12 +4,13 @@ FROM amazonlinux:2
 # Install dependencies
 RUN yum -y update && \
     yum -y install \
+    jq
     # unzip \
     # python3 \
     # python3-pip \
     # curl \
-    jq \
-    aws-cli
+    # jq \
+    # aws-cli
 
 # Create a working directory
 WORKDIR /app
