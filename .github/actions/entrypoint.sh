@@ -36,7 +36,7 @@ add_key_value() {
 # Main execution
 initialize_json
 
-k="awsLambda"
+k=awsLambda
 v="True"
 if [ ! -z "$k" ] && [ ! -z "$v" ]; then
     add_key_value "$k" "$v"
@@ -44,7 +44,7 @@ else
     echo "Usage: $0 [key] [value] or $0 --interactive"
 fi
 
-k="awsLambda.filesModified"
+k=awsLambda.filesModified
 v="True"
 if [ ! -z "$k" ] && [ ! -z "$v" ]; then
     add_key_value "$k" "$v"
