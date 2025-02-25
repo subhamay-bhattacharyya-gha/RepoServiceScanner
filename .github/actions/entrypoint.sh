@@ -39,8 +39,25 @@ add_key_value() {
 # Main execution
 initialize_json
 
-add_key_value awsLambda "True"
-add_key_value awsLambda.filesModified "False"
+# Check if lambda-code directory exists
+if [ -d "lambda-code" ]; then
+    echo "Lambda function directory found."
+    add_key_value awsLambda "True"
+    # Check if lambda-code was modified in the latest commit
+    if git diff --name-only HEAD^ HEAD | grep '^lambda-code/'; then
+        echo "Changes detected in lambda-code directory."
+        add_key_value awsLambda "True"
+    else
+        echo "No changes detected in lambda-code directory."
+        add_key_value awsLambda "False"
+    fi
+else
+    echo "Lambda function directory not found."
+    add_key_value awsLambda "False"
+fi
+
+# add_key_value awsLambda "True"
+# add_key_value awsLambda.filesModified "False"
 
 # k=awsLambda
 # v="True"
@@ -57,10 +74,6 @@ add_key_value awsLambda.filesModified "False"
 # else
 #     echo "Usage: $0 [key] [value] or $0 --interactive"
 # fi
-
-pwd
-
-ls -la
 
 echo "Services used in this action: `cat services-used.json`"
 

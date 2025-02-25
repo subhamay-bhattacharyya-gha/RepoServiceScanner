@@ -4,10 +4,10 @@ FROM amazonlinux:2
 # Install dependencies
 RUN yum -y update && \
     yum -y install \
-    unzip \
-    python3 \
-    python3-pip \
-    curl \
+    # unzip \
+    # python3 \
+    # python3-pip \
+    # curl \
     jq \
     aws-cli
 
