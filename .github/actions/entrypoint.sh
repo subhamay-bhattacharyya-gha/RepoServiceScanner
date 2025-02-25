@@ -29,8 +29,10 @@ add_key_value() {
 # Main execution
 initialize_json
 
-if [ ! -z "$1" ] && [ ! -z "$2" ]; then
-    add_key_value "$1" "$2"
+k="testKey"
+v="testValue"
+if [ ! -z "$k" ] && [ ! -z "$v" ]; then
+    add_key_value "$k" "$v"
 else
     echo "Usage: $0 [key] [value] or $0 --interactive"
 fi
