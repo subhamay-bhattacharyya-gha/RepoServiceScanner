@@ -36,8 +36,8 @@ add_key_value() {
 # Main execution
 initialize_json
 
-add_key_value "awsLambda" "True"
-add_key_value "awsLambda.filesModified" "True"
+add_key_value awsLambda "True"
+add_key_value awsLambda.filesModified "True"
 
 # k=awsLambda
 # v="True"
