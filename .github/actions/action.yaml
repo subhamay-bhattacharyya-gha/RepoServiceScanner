@@ -1,4 +1,4 @@
-name: 'Simple param action'
+name: 'Simple param action using Docker'
 description: 'Prints the argument and stores it in the file'
 inputs:
   name:
