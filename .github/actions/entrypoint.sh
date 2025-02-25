@@ -23,13 +23,16 @@ add_key_value() {
 
     # Check for nested keys using dot notation
     IFS='.' read -ra keys <<< "$key"
-    jq_script='.'
-    for k in "${keys[@]}"; do
-        jq_script+=" | .\"$k\""
+    parent_path='.'
+    for ((i = 0; i < ${#keys[@]} - 1; i++)); do
+        parent_path+=" | .\"${keys[i]}\""
+        # Ensure each parent is an object
+        jq "$parent_path |= (if . == null or . == "" then {} else . end)" "$JSON_FILE" > temp.json && mv temp.json "$JSON_FILE"
     done
 
-    # Update JSON using jq
-    jq "$jq_script = \"$value\"" "$JSON_FILE" > temp.json && mv temp.json "$JSON_FILE"
+    # Add the final key-value pair
+    final_key="${keys[-1]}"
+    jq "$parent_path | .\"$final_key\" = \"$value\"" "$JSON_FILE" > temp.json && mv temp.json "$JSON_FILE"
     echo "Added nested key: $key with value: $value to $JSON_FILE."
 }
 
