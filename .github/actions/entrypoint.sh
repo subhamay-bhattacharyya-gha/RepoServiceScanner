@@ -27,12 +27,12 @@ add_key_value() {
     for ((i = 0; i < ${#keys[@]} - 1; i++)); do
         parent_path+=" | .\"${keys[i]}\""
         # Ensure each parent is an object
-        jq "$parent_path |= (if . == null or . == "" then {} else . end)" "$JSON_FILE" > temp.json && mv temp.json "$JSON_FILE"
+        jq "$parent_path |= (if . == null or . == \"\" then {} else . end)" "$JSON_FILE" > temp.json && mv temp.json "$JSON_FILE"
     done
 
     # Add the final key-value pair
     final_key="${keys[-1]}"
-    jq "$parent_path | .\"$final_key\" = \"$value\"" "$JSON_FILE" > temp.json && mv temp.json "$JSON_FILE"
+    jq "$parent_path |= (if type != \"object\" then {} else . end) | .\"$final_key\" = \"$value\"" "$JSON_FILE" > temp.json && mv temp.json "$JSON_FILE"
     echo "Added nested key: $key with value: $value to $JSON_FILE."
 }
 
